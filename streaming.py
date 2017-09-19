@@ -18,14 +18,15 @@ class StdOutListener(StreamListener):
 
 def filterStream(keywordList):
     # This handles Twitter authetification and the connection to Twitter Streaming API
-    l = StdOutListener()
     auth = OAuthHandler(properties["consumer_key"], properties["consumer_secret"])
     auth.set_access_token(properties["access_token"], properties["access_token_secret"])
-    stream = Stream(auth, l)
+    stream = Stream(auth, StdOutListener())
 
     # This line filter Twitter Streams to capture data by the keywords:
     stream.filter(track=keywordList)
 
 
 if __name__ == '__main__':
-    filterStream(['EUR', 'GBP'])
+    theFilter = ['EUR', 'GBP']
+    print("Twitter streaming API filtering for " + str(theFilter))
+    filterStream(theFilter)
