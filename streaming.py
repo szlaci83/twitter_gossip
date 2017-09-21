@@ -27,7 +27,6 @@ class StdOutListener(StreamListener):
             outfile.write(json.dumps(data, indent=4,sort_keys=True))
             outfile.write("\n")
             outfile.close()
-            self.moveToZip(file_num)
 
     def on_data(self, data):
         tweetJSON = json.loads(data)
@@ -43,9 +42,10 @@ class StdOutListener(StreamListener):
         except KeyError:
             pass
         self.pp.pprint(lineJSON)
-        if self.today != time.localtime(lineJSON['timestamp_ms'])[7]:
+        now = time.localtime(time.time())[7]
+        if self.today != now:
             self.moveToZip(self.today)
-            self.today = time.localtime(lineJSON['timestamp_ms'])[7]
+            self.today = now
         self.save_as_JSON(lineJSON, self.today)
         if sentiment_score != 0 :
             self.no_of_tweets +=1
