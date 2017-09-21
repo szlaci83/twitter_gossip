@@ -1,7 +1,7 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-import json, pprint
+import json, pprint, time, gzip, os
 
 import sentiment
 
@@ -12,12 +12,22 @@ class StdOutListener(StreamListener):
     pp = pprint.PrettyPrinter(indent=4)
     no_of_tweets = 0
     total_sentiment_score = 0
+    today = time.localtime(time.time())[7]
 
-    def save_as_JSON(self, data):
-        with open('tweets.json', 'a', encoding="utf8") as outfile:
+    def moveToZip(self, file_num):
+        f_in = open('tweets-' + str(file_num) +'.json', 'rb')
+        f_out = gzip.open('tweets-' + str(file_num) +'.json.gz', 'wb')
+        f_out.writelines(f_in)
+        f_out.close()
+        f_in.close()
+        os.remove('tweets-' + str(file_num) +'.json')
+
+    def save_as_JSON(self, data, file_num):
+        with open('tweets-' + str(file_num) + '.json', 'a', encoding="utf8") as outfile:
             outfile.write(json.dumps(data, indent=4,sort_keys=True))
             outfile.write("\n")
             outfile.close()
+            self.moveToZip(file_num)
 
     def on_data(self, data):
         tweetJSON = json.loads(data)
@@ -33,7 +43,10 @@ class StdOutListener(StreamListener):
         except KeyError:
             pass
         self.pp.pprint(lineJSON)
-        self.save_as_JSON(lineJSON)
+        if self.today != time.localtime(lineJSON['timestamp_ms'])[7]:
+            self.moveToZip(self.today)
+            self.today = time.localtime(lineJSON['timestamp_ms'])[7]
+        self.save_as_JSON(lineJSON, self.today)
         if sentiment_score != 0 :
             self.no_of_tweets +=1
             self.total_sentiment_score += sentiment_score
