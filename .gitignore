@@ -1,5 +1,6 @@
+*.gz
 properties.json
-tweets.json
+*.json
 # Compiled source #
 ###################
 *.com
