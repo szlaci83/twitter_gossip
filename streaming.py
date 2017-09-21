@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
@@ -23,7 +24,7 @@ class StdOutListener(StreamListener):
         os.remove('tweets-' + str(file_num) +'.json')
 
     def save_as_JSON(self, data, file_num):
-        with open('tweets-' + str(file_num) + '.json', 'a', encoding="utf8") as outfile:
+        with open('tweets-' + str(file_num) + '.json', 'a') as outfile:
             outfile.write(json.dumps(data, indent=4,sort_keys=True))
             outfile.write("\n")
             outfile.close()
