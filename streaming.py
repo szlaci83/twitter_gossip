@@ -32,9 +32,9 @@ class StdOutListener(StreamListener):
     def on_data(self, data):
         tweetJSON = json.loads(data)
         lineJSON = {}
-        sentiment_score = sentiment.analyse(tweetJSON['text'])
 
         try:
+	    sentiment_score = sentiment.analyse(tweetJSON['text'])	
             lineJSON['text'] = tweetJSON['text']
             lineJSON['followers_count'] = tweetJSON['user']['followers_count']
             lineJSON['timestamp_ms'] = tweetJSON['timestamp_ms']
@@ -70,6 +70,6 @@ def filterStream(keywordList):
     stream.filter(track=keywordList)
 
 if __name__ == '__main__':
-    theFilter = ['bitcoin']
+    theFilter = ['bitcoin', 'ethereum', 'ETH', 'BTC']
     print("Twitter streaming API filtering for " + str(theFilter))
     filterStream(theFilter)
