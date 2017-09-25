@@ -9,6 +9,8 @@ import sentiment
 #Dict from JSON that contains the user credentials to access Twitter API
 properties = json.loads(open('properties.json').read())
 
+the_filter = ['bitcoin', 'ethereum', 'ETH', 'BTC']
+
 class StdOutListener(StreamListener):
     pp = pprint.PrettyPrinter(indent=4)
     no_of_tweets = 0
@@ -16,8 +18,10 @@ class StdOutListener(StreamListener):
     today = time.localtime(time.time())[7]
 
     def moveToZip(self, file_num):
+        now = time.localtime(time.time() - 5000)
+        date = str(now[0]) + '-' + str(now[1]) + '-' + str(now[2])
         f_in = open('tweets-' + str(file_num) +'.json', 'rb')
-        f_out = gzip.open('tweets-' + str(file_num) +'.json.gz', 'wb')
+        f_out = gzip.open('tweets-' + date +'.json.gz', 'wb')
         f_out.writelines(f_in)
         f_out.close()
         f_in.close()
@@ -71,7 +75,10 @@ def filterStream(keywordList):
     # This line filter Twitter Streams to capture data by the keywords:
     stream.filter(track=keywordList)
 
+def do_filter():
+    print("Twitter streaming API filtering for " + str(the_filter))
+    filterStream(the_filter)
+
 if __name__ == '__main__':
-    theFilter = ['bitcoin', 'ethereum', 'ETH', 'BTC']
-    print("Twitter streaming API filtering for " + str(theFilter))
-    filterStream(theFilter)
+    crypto_filter = ['bitcoin', 'ethereum', 'ETH', 'BTC']
+    do_filter(crypto_filter)
