@@ -16,7 +16,10 @@ hotel_rev = ["Great place to be when you are in Bangalore." ,
              "Mushroom fried rice was tasty",
              "really really the worst"]
 
+empty_string = ""
+
 if __name__ == '__main__':
     for sentence in hotel_rev:
         print(sentence)
         print(analyse(sentence))
+    #print(analyse(empty_string))

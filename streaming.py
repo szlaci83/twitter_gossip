@@ -34,14 +34,16 @@ class StdOutListener(StreamListener):
         lineJSON = {}
 
         try:
-	    sentiment_score = sentiment.analyse(tweetJSON['text'])	
+            sentiment_line = tweetJSON['text']
             lineJSON['text'] = tweetJSON['text']
             lineJSON['followers_count'] = tweetJSON['user']['followers_count']
             lineJSON['timestamp_ms'] = tweetJSON['timestamp_ms']
             lineJSON['text'] = tweetJSON['text']
-            lineJSON['sentiment'] = sentiment_score
         except KeyError:
             pass
+            sentiment_line = ""
+        sentiment_score = sentiment.analyse(sentiment_line)
+        lineJSON['sentiment'] = sentiment_score
         self.pp.pprint(lineJSON)
         now = time.localtime(time.time())[7]
         if self.today != now:
