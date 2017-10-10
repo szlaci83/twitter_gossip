@@ -1,6 +1,6 @@
 #!/usr/bin/python
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-#from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+#from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def analyse(text):
     sid = SentimentIntensityAnalyzer()

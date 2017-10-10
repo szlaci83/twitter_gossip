@@ -75,7 +75,7 @@ def filterStream(keywordList):
     # This line filter Twitter Streams to capture data by the keywords:
     stream.filter(track=keywordList)
 
-def do_filter():
+def do_filter(the_filter):
     print("Twitter streaming API filtering for " + str(the_filter))
     filterStream(the_filter)
 
